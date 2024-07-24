@@ -1,0 +1,41 @@
+package com.example.nagoyameshi.controller;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.nagoyameshi.entity.Users;
+import com.example.nagoyameshi.repository.UserRepository;
+import com.example.nagoyameshi.security.UserDetailsImpl;
+
+
+
+@Controller
+public class MypageController {
+	
+	private final UserRepository userRepository;
+	
+	public MypageController(UserRepository userRepository)
+	{
+		this.userRepository=userRepository;
+	}
+
+	@GetMapping("/mypage/index")
+	public String index() {
+		
+		return "/mypage/index";
+	}
+	
+	
+	@GetMapping("/mypage/user/show")
+	public String showUser(@AuthenticationPrincipal UserDetailsImpl userDetailsImpl,Model model)
+	{
+		Users user=userRepository.getReferenceById(userDetailsImpl.getUser().getId());
+		
+		model.addAttribute("user",user);
+		return "/user/show";
+	}
+	
+}

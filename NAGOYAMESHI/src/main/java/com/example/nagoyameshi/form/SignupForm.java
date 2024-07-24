@@ -20,4 +20,7 @@ public class SignupForm {
 	@Length(min=8,message = "パスワードは8文字以上で入力してください")
 	private String password;
 	
+	@NotBlank(message="確認用パスワードを入力してください")
+	private String confirmPassword;
+	
 }

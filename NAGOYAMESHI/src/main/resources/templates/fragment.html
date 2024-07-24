@@ -42,12 +42,12 @@
 					 
 					 <li class="nav-item" sec:authorize="isAnonymous()">
 						
-                        <a class="nav-link" th:href="@{/auth/signup}">新規登録</a>
+                        <a class="nav-link" th:href="@{/signup}">新規登録</a>
                 	 </li>                                                      
              
-                     <!-- ログイン済みであれば表示する --> 
+                     <!-- ログイン済み（無料） --> 
 					 <li class="nav-item" sec:authorize="hasRole('ROLE_GENERAL')">
-                    	  <a class="nav-link" href="＃">マイページ</a>
+                    	  <a class="nav-link" th:href="@{/mypage/index}">マイページ</a>
                  	 </li> 
 					 
 					 
@@ -57,8 +57,23 @@
                                  ログアウト
                              </a>
                              <form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form>                                     
-                         </div>
-                     </li>                       
+                       
+                     </li>  
+					 
+					 <!-- ログイン済み（有料） -->
+					 <li class="nav-item" sec:authorize="hasRole('ROLE_MEMBERSHIP')">
+                    	  <a class="nav-link" th:href="@{/mypage/index}">マイページ</a>
+                 	 </li> 
+ 				 
+ 				 
+                     <li class="nav-item" sec:authorize="hasRole('ROLE_MEMBERSHIP')">
+                                                                                       
+                             <a class="nav-link" th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                 ログアウト
+                             </a>
+                             <form class="d-none" id="logout-form" th:action="@{/logout}" method="post"></form>                                     
+                        
+                     </li>                           
                          
                      <!-- 管理者であれば表示する -->    
                      <li class="nav-item dropdown" sec:authorize="hasRole('ROLE_ADMIN')">

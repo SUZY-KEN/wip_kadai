@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment::meta}"></div>
+	<div th:replace="~{fragment::scripts}"></div>
+	<title>会社情報</title>
+</head>
+
+<body>
+
+	<div th:replace="~{fragment::header}"></div>
+	
+	<main>
+		
+<!--パンくず	-->
+		<nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+           <ol class="breadcrumb mb-0">                        
+               <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></liclass="breadcrumb-item">
+               <li class="breadcrumb-item" aria-current="page">マイページ</li>
+           </ol>
+       </nav>  
+	     
+		<div>
+			
+<!--サクセスメッセージ-->
+			<div class="container pt-4 pb-5 samuraitravel-container">
+             
+				
+				<div th:if="${successMessage}" class="alert alert-info">
+                    <span th:text="${successMessage}"></span>
+                </div>   
+				
+            </div>
+			
+<!--選択ボタン-->
+		<!-- 無料会員-->
+			<div>
+				<a href="@{/mypage/user/show}">会員情報</a>
+			</div>
+			
+			<div sec:authorize="hasRole('ROLE_GENERAL')">
+				<a>有料会員登録</a>
+			</div>
+			
+		<!-- 有料会員-->	
+			<div sec:authorize="hasRole('ROLE_MEMBERSHIP')">
+				<div>
+					<a>クレジットカード編集</a>
+				</div>
+							
+				<div>
+					<a>有料会員解約</a>
+				</div>
+				
+				<div>
+					<a>予約一覧</a>
+				</div>
+				
+				<div>
+					<a>お気に入り一覧</a>
+				</div>
+			</div>
+				
+			<div>
+				<a th:href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+			        ログアウト
+			    </a>
+
+			</div>		
+		</div>
+	</main>
+	
+	
+	<div th:replace="~{fragment::footer}"></div>
+	<div th:replace="~{fragment::scripts}"></div>
+</body>
+</html>
