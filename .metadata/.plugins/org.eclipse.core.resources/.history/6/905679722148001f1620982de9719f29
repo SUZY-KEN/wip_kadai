@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<div th:replace="~{fragment::meta}"></div>
+	<title>店舗一覧</title>
+</head>
+
+<body>
+
+	<div th:replace="~{fragment::header}"></div>
+	
+	<main>
+		
+		
+		<!--各店舗				-->
+			<div th:each="restaurants:${restaurantPage}">
+				
+				<a th:href="@{/restaurants/show/__${restaurants.getId()}__}">
+					
+					<h3 th:text="${restaurants.getName()}" ></h3>
+					
+<!--イメージ後で作る-->
+					<img th:if="${restaurants.getImage()}" th:src="###"></img>
+					
+					<p></p>
+					
+					
+					
+				</a>
+				
+				
+				
+				
+			</div>
+			
+			
+		<!--店舗ページネーション設定-->
+
+
+
+	</main>
+	
+	
+	<div th:replace="~{fragment::footer}"></div>
+</body>
+</html>

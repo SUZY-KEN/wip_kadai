@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html th:xmls="https://www.thymeleaf.org">
+<head>
+	<div th:fragment="meta" th:remove="tag" >
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+	</div>
+
+<title>部品</title>
+</head>
+
+
+<body>
+
+<!--ヘッダー-->
+	<div th:fragment="header" th:remove="tag">
+		<nav>
+			<a th:href="@{/company}"></a>
+			
+		</nav>
+		
+		
+		
+	</div>
+	
+	
+<!--フッター-->
+	<div th:fragment="footer" th:remove="tag">
+		<a th:href="@{/company}">&copy;NAGOYAMESHI</a>
+		
+	</div>
+</body>
+</html>

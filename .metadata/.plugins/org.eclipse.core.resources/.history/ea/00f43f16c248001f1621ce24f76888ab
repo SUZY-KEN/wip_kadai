@@ -1,0 +1,40 @@
+package com.example.nagoyameshi.security;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
+import com.example.nagoyameshi.entity.Users;
+import com.example.nagoyameshi.repository.UserRepository;
+
+public class UserDetailsServiceImpl implements UserDetailsService{
+	
+	private UserRepository userRepository;
+	
+	public UserDetailsServiceImpl(UserRepository userRepository)
+	{
+		this.userRepository=userRepository;
+	}
+
+	
+	@Override
+	public UserDetails loadUserByUsername(String email) 
+	{
+			Users user=userRepository.findByEmail(email);
+			
+			String userRoleName=user.getRole().getName();
+			
+			Collection<GrantedAuthority>authorities=new ArrayList<>();
+			
+			System.out.println(user+":"+authorities);
+			authorities.add(new SimpleGrantedAuthority(userRoleName));
+			
+			return new UserDetailsImpl(user,authorities );
+		
+		
+	}
+}

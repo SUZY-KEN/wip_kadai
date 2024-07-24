@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+
+<head>
+	<div th:replace="~{fragment::meta}"></div>
+	<title>会社情報</title>
+</head>
+
+<body>
+
+	<div th:replace="~{fragment::header}"></div>
+	
+	<main>
+		<div>
+			
+			<form method="get" th:action="@{/resutaurants}">
+				<div>
+					<input type="text"name="keyword" th:value="${nameKeyword}"  placeholder="お探しの店舗名を入力してください">
+				</div>
+				<div>
+					<div>
+							<option selected>カテゴリを選択して下さい</option>
+							<div th:each="${category:categoryList}">
+							<option  th:value="${category.getId()}" th:text="${category.getName()}"></option>
+							</div>
+					</select>
+				</div>	
+				<div>
+					<button type="submit">検索</button>
+				</div>
+				
+				
+			</form>
+				
+		</div>
+		
+		
+		
+	</main>
+	
+	
+	<div th:replace="~{fragment::footer}"></div>
+</body>
+</html>
