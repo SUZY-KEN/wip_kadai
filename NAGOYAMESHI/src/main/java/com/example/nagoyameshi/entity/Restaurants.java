@@ -1,5 +1,7 @@
 package com.example.nagoyameshi.entity;
 
+import java.sql.Timestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,8 +45,17 @@ public class Restaurants {
 	@Column(name="address")
 	private String address;
 	
+	@Column(name="capacity")
+	private Integer capacity;
+	
 	@Column(name="evalues")
 	private Integer evalues;
+	
+	@Column(name="evalues_double")
+	private Double evaluesDouble;
+	
+	@Column(name="created_at")
+	private Timestamp createdAt;
 	
 }
 

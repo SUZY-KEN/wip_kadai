@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+ <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">    
+     <head>
+         <div th:replace="~{fragment :: meta}"></div>   
+              
+         <div th:replace="~{fragment :: styles}"></div>
+           
+         <title>カテゴリー登録</title>   
+     </head>
+     <body>
+         <div class="samuraitravel-wrapper">
+             <!-- ヘッダー -->
+             <div th:replace="~{fragment :: header}"></div>
+             
+             <main>
+                 <div class="container samuraitravel-container pb-5">
+                     <div class="row justify-content-center">
+                         <div class="col-xxl-9 col-xl-10 col-lg-11">
+                             <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                 <ol class="breadcrumb mb-0"> 
+                                     <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>  
+									 <li class="breadcrumb-item"><a th:href="@{/admin/category/show}">カテゴリー管理</a></li>                   
+                                     <li class="breadcrumb-item active" aria-current="page" th:text="${category.getName()+'の編集'}"></li>
+                                 </ol>
+                             </nav> 
+                             
+                             <h1 class="mb-3 text-center"  th:text="${category.getName()+'の編集'}"></h1>  
+            		  
+						<!--カテゴリ編集-->
+							
+							<div>
+								<form method="post" th:action="@{/admin/category/register}" th:object="${categoryForm}">
+									<div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2" th:errors="*{name}"></div>
+									
+									<input type="text" th:field="*{name}" >
+									<input type="submit" value="編集">
+								</form>
+								
+								<form method="get" th:action="@{/admin/category/show}">
+									<button type="submit">キャンセル</button>
+								</form>
+							 </div>
+                            
+							 
+                    	 </div>
+                 	</div> 
+             	</div> 
+             </main>
+             
+           
+         </div>    
+		 <!-- フッター -->
+		 <div th:replace="~{fragment :: footer}"></div>
+         <div th:replace="~{fragment :: scripts}"></div>  
+   </body>
+ </html>

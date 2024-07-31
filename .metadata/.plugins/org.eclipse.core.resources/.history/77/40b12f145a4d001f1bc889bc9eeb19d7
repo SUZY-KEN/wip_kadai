@@ -1,0 +1,37 @@
+package com.example.nagoyameshi.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.nagoyameshi.entity.Category;
+import com.example.nagoyameshi.form.CategoryForm;
+import com.example.nagoyameshi.repository.CategoryRepository;
+
+@Service
+public class CategoryService {
+
+	private final CategoryRepository categoryRepository;
+	
+	public CategoryService(CategoryRepository categoryRepository)
+	{
+		this.categoryRepository=categoryRepository;
+	}
+	
+	public boolean isSameCategory(CategoryForm categoryForm)
+	{
+		List<Category> listCategory=categoryRepository.findAll();
+		
+		
+		for(Category category:listCategory)
+		{
+			if(categoryForm.getName().equals(category.getName()))
+			{
+				return false;
+			}
+		
+		return true;
+		
+	}
+}

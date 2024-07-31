@@ -1,5 +1,7 @@
 package com.example.nagoyameshi.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -22,4 +24,10 @@ public interface RestaurantRepository extends JpaRepository<Restaurants, Integer
 	
 	public Page<Restaurants>findAllByOrderByPriceAsc(Pageable pageable);
 	public Page<Restaurants>findAllByOrderByPriceDesc(Pageable pageable);
+	
+	public List<Restaurants>findByCategory(Category category);
+	
+	public List<Restaurants>findByNameLikeOrderByCreatedAtDesc(String Name);
+	
+	
 }

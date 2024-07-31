@@ -1,0 +1,71 @@
+package com.example.nagoyameshi.controller;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.example.nagoyameshi.entity.Restaurants;
+import com.example.nagoyameshi.entity.Review;
+import com.example.nagoyameshi.entity.Users;
+import com.example.nagoyameshi.repository.ReviewRepository;
+import com.example.nagoyameshi.service.ReviewService;
+
+@Controller
+@RequestMapping("/admin/review")
+public class AdminReviewController {
+	private final ReviewRepository reviewRepository;
+	private final ReviewService reviewService;
+	
+	public AdminReviewController(ReviewRepository reviewRepository,ReviewService reviewService)
+	{
+		this.reviewRepository=reviewRepository;
+		this.reviewService=reviewService;
+	}
+	
+	
+	
+
+	@GetMapping("/show")
+	public String show(@PageableDefault(page=0,size=10,sort="id")Pageable pageable,
+			@RequestParam(name="userKeyword")String userKeyword,@RequestParam(name="restaurantKeyword")String restaurantKeyword,Model model)
+	{
+		
+		Page<Review>reviewPage=new Page();
+		
+		if(userKeyword!=null&&!userKeyword.isEmpty())
+		{
+			List<Users>userList=reviewService.usertIndex(userKeyword);
+			
+			for(Users user:userList)
+			{
+				reviewPage=reviewRepository.findAllByUsersOrderByCreatedAtDesc(user, pageable);
+			}
+			
+		}
+		else if(restaurantKeyword!=null&&!restaurantKeyword.isEmpty())
+		{
+			List<Restaurants>restaurantList=reviewService.restaurantIndex(restaurantKeyword);
+			for(Restaurants restaurant:restaurantList)
+			{
+				reviewPage=reviewRepository.findAllByRestaurantsOrderByCreatedAtDesc(restaurant, pageable);
+			}
+			
+		}
+		else
+		{
+			reviewPage=reviewRepository.findAllByOrderByCreatedAtDesc(pageable);
+
+		}
+		
+		model.addAttribute("reviewPage",reviewPage);
+		
+		return "review/admin/show";
+	}
+}

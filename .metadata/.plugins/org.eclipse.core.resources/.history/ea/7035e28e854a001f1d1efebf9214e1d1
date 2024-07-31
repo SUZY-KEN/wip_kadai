@@ -1,0 +1,20 @@
+package com.example.nagoyameshi.controller;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.nagoyameshi.entity.Restaurants;
+import com.example.nagoyameshi.entity.Users;
+import com.example.nagoyameshi.repository.RestaurantRepository;
+import com.example.nagoyameshi.security.UserDetailsImpl;
+import com.example.nagoyameshi.service.FavoriteService;
+
+@Controller
+@RequestMapping("/favorite/{restaurantId}")
+public class FavoriteController {
+	
+}

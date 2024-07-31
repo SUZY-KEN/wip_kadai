@@ -3,8 +3,8 @@
 
 <head>
 	<div th:replace="~{fragment::meta}"></div>
-	<div th:replace="~{fragment::scripts}"></div>
-	<title>ログイン</title>
+	<div th:replace="~{fragment::styles}"></div>
+	<title>新規登録</title>
 </head>
 
 <body>
@@ -26,7 +26,7 @@
 
 		
 		
-<!--ログイン-->
+<!--新規登録-->
 		<div>
 			<div class="container pt-4 pb-5 samuraitravel-container">
                 <div class="row justify-content-center">
@@ -91,6 +91,7 @@
                                         </div>
                                     </label>
                                 </div>
+								
                                 <div class="col-md-7">
                                     <div th:if="${#fields.hasErrors('confirmPassword')}" class="text-danger small mb-2" th:errors="*{confirmPassword}"></div>
                                     <input type="password" class="form-control" th:field="*{confirmPassword}" autocomplete="new-password">

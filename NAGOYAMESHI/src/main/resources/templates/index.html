@@ -3,12 +3,12 @@
 
 <head>
 	<div th:replace="~{fragment::meta}"></div>
-	<div th:replace="~{fragment::scripts}"></div>
-	<title>会社情報</title>
+	<div th:replace="~{fragment::styles}"></div>
+	<title>ホーム</title>
 </head>
 
 <body>
-
+	
 	<div th:replace="~{fragment::header}"></div>
 	
 	<main>
@@ -35,7 +35,7 @@
 			
 <!--検索フォーム-->
 			<form method="get" th:action="@{/restaurants}">
-				<input type="hidden" th:value="0" name="price">
+				
 				<div>
 					<input type="text"name="nameKeyword" th:value="${nameKeyword}"  placeholder="お探しの店舗名を入力してください">
 				</div>

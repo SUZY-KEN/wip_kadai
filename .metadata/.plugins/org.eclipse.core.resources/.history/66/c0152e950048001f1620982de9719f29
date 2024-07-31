@@ -1,3 +1,0 @@
-insert ignore into categories(name) values("ラーメン"); 
-insert ignore into categories(name) values("カレー"); 
-insert ignore into categories(name) values("ハンバーガー"); 

@@ -1,9 +1,12 @@
 package com.example.nagoyameshi.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,20 +14,36 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.nagoyameshi.entity.Favorite;
 import com.example.nagoyameshi.entity.Restaurants;
+import com.example.nagoyameshi.entity.Review;
+import com.example.nagoyameshi.entity.Users;
+import com.example.nagoyameshi.form.ReservationForm;
 import com.example.nagoyameshi.repository.CategoryRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
+import com.example.nagoyameshi.repository.ReviewRepository;
+import com.example.nagoyameshi.security.UserDetailsImpl;
+import com.example.nagoyameshi.service.FavoriteService;
+import com.example.nagoyameshi.service.ReviewService;
 
 @Controller
 @RequestMapping("/restaurants")
 public class RestaurantController {
 	private final  RestaurantRepository restaurantRepository;
 	private final CategoryRepository categoryRepository;
+	private final ReviewRepository reviewRepository;
+	private final ReviewService reviewService;
+	private final FavoriteService favoriteService;
 	
-	public RestaurantController(RestaurantRepository restaurantRepository,CategoryRepository categoryRepository)
+	public RestaurantController(RestaurantRepository restaurantRepository,
+			CategoryRepository categoryRepository,ReviewRepository reviewRepository,ReviewService reviewService,
+			FavoriteService favoriteService)
 	{
 		this.restaurantRepository=restaurantRepository;
 		this.categoryRepository=categoryRepository;
+		this.reviewRepository=reviewRepository;
+		this.reviewService=reviewService;
+		this.favoriteService=favoriteService;
 	}
 	
 	
@@ -42,70 +61,7 @@ public class RestaurantController {
 		
 
 		
-//		if(category!=null)
-//		{
-//			if(nameKeyword!=null&&!nameKeyword.isEmpty() )
-//			{
-//				switch(price)
-//				{
-//					case 1:restaurantsPage=restaurantRepository.findByCategoryAndNameLikeOrderByPriceAsc(categoryRepository.getReferenceById(category), "%"+nameKeyword+"%", pageable);
-//							break;
-//					case 2:restaurantsPage=restaurantRepository.findByCategoryAndNameLikeOrderByPriceDesc(categoryRepository.getReferenceById(category), "%"+nameKeyword+"%", pageable);
-//							break;
-//					default:restaurantsPage=restaurantRepository.findByCategoryAndNameLike(categoryRepository.getReferenceById(category), "%"+nameKeyword+"%", pageable);
-//							break;
-//				
-//				}
-//				
-//			}
-//			else
-//			{
-//				
-//				switch(price)
-//				{
-//					case 1:restaurantsPage=restaurantRepository.findByCategoryOrderByPriceAsc(categoryRepository.getReferenceById(category), pageable);
-//							break;
-//					case 2:restaurantsPage=restaurantRepository.findByCategoryOrderByPriceDesc(categoryRepository.getReferenceById(category), pageable);
-//							break;
-//					default:restaurantsPage=restaurantRepository.findByCategory(categoryRepository.getReferenceById(category), pageable);
-//							break;
-//				
-//				}
-//				
-//				
-//			}
-//		}
-//		else 
-//		{
-//			if(nameKeyword!=null&&!nameKeyword.isEmpty() )
-//			{
-//				
-//				switch(price)
-//				{
-//					case 1:restaurantsPage=restaurantRepository.findByNameLikeOrderByPriceAsc("%"+nameKeyword+"%", pageable);
-//							break;
-//					case 2:restaurantsPage=restaurantRepository.findByNameLikeOrderByPriceDesc("%"+nameKeyword+"%", pageable);
-//							break;
-//					default:restaurantsPage=restaurantRepository.findByNameLike("%"+nameKeyword+"%", pageable);
-//							break;				
-//				}
-//				
-//			}	
-//			else
-//			{
-//				switch(price)
-//				{
-//					case 1:restaurantsPage=restaurantRepository.findAllByOrderByPriceAsc(pageable);
-//							break;
-//					case 2:restaurantsPage=restaurantRepository.findAllByOrderByPriceDesc(pageable);
-//						   	break;
-//					
-//					default:restaurantsPage=restaurantRepository.findAll(pageable);
-//							break;
-//				
-//				}
-//			}
-//		}
+
 		
 		if(category!=null)
 		{
@@ -202,15 +158,48 @@ public class RestaurantController {
 	
 	
 	@GetMapping("/show/{id}")
-	public String show(@PathVariable(name="id")Integer id,Model model) {
+	public String show(@PathVariable(name="id")Integer id,Model model,@AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 		
-		//店舗情報を渡す
-		
+	//店舗情報の生成
 		Restaurants restaurant=restaurantRepository.getReferenceById(id);
-		model.addAttribute("restaurants",restaurant);
 		
-		//レビュー情報を渡す
 		
+		
+		//レビュー情報を渡す&&お気に入り情報を渡す
+		Favorite favorite=null;
+		 
+		boolean hasUserAlreadyReviewed = false;        
+        boolean isFavoriteRestaurant=false;
+		
+         if (userDetailsImpl != null) {
+             Users user = userDetailsImpl.getUser();
+             
+             System.out.println("if:success");
+             
+         //レビューがあるかの判定
+             hasUserAlreadyReviewed = reviewService.hasUserAlreadyReviewed(restaurant, user); 
+            
+             System.out.println("has:success");
+         //お気に入り判定
+             isFavoriteRestaurant=favoriteService.isFavoriteRestaurant(user, restaurant);
+             System.out.println("is:success");
+             
+         }
+         List<Review> newReviews =reviewRepository.findTop6ByRestaurantsAndEnabledOrderByCreatedAtDesc(restaurant,true) ;
+         long totalReviewCount=reviewRepository.countByRestaurantsAndEnabled(restaurant,true);
+         
+         model.addAttribute("restaurants",restaurant);
+         model.addAttribute("reservationForm",new ReservationForm());
+         model.addAttribute("hasUserAlreadyReviewed", hasUserAlreadyReviewed);
+         model.addAttribute("isFavoriteRestaurant", isFavoriteRestaurant);
+         model.addAttribute("favorite",favorite);
+         model.addAttribute("newReviews", newReviews);        
+         model.addAttribute("totalReviewCount", totalReviewCount);
+         
+         
+        
+         System.out.println("show:success");
+              
 		
 		return "restaurants/show";
 	}

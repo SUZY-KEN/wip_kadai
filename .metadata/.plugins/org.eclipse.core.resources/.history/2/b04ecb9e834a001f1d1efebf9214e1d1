@@ -1,0 +1,36 @@
+package com.example.nagoyameshi.controller;
+
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.example.nagoyameshi.entity.Restaurants;
+import com.example.nagoyameshi.repository.RestaurantRepository;
+import com.example.nagoyameshi.security.UserDetailsImpl;
+
+@Controller
+@RequestMapping("/favorite/{restaurantId}")
+public class FavoriteController {
+	private final RestaurantRepository restaurantRepository;
+	
+	public FavoriteController(RestaurantRepository restaurantRepository)
+	{
+		this.restaurantRepository=restaurantRepository;
+	}
+	
+	
+	@GetMapping("/register")
+	public String register(@PathVariable(name="restaurantid")Integer restaurantId,@AuthenticationPrincipal UserDetailsImpl useDetailsImpl)
+	{
+		Restaurants restaurants=
+		
+	}
+	
+	@GetMapping("/cancel")
+	public String cancel(@PathVariable(name="restaurantid")Integer restaurantId,@AuthenticationPrincipal UserDetailsImpl useDetailsImpl)
+	{
+		
+	}
+}

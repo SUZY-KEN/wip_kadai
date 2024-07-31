@@ -1,0 +1,37 @@
+package com.example.nagoyameshi.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.example.nagoyameshi.form.RestaurantCreateForm;
+
+@Controller
+@RequestMapping("admin/restaurant")
+public class AdminRestaurantController {
+
+	@GetMapping("/create")
+	public String show(Model model)
+	{
+		model.addAttribute("restaurantCreateForm",new RestaurantCreateForm());
+		return "restaurants/admin/create";
+	}
+	
+	@PostMapping("/register")
+	public String register(@ModelAttribute @Validated RestaurantCreateForm restaurantCreateForm,
+			BindingResult bindingResult,RedirectAttributes redirectAttributes)
+	{
+		if(bindingResult.hasErrors())
+		{
+			return "restaurants/admin/create";
+		}
+		
+		return "";
+	}
+}

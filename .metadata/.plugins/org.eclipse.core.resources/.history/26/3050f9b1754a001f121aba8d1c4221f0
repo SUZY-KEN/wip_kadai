@@ -1,0 +1,40 @@
+package com.example.nagoyameshi.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.nagoyameshi.entity.Restaurants;
+import com.example.nagoyameshi.entity.Review;
+import com.example.nagoyameshi.entity.Users;
+import com.example.nagoyameshi.form.ReviewEditForm;
+import com.example.nagoyameshi.repository.ReviewRepository;
+
+@Service
+public class ReviewService {
+
+	private final ReviewRepository reviewRepository;
+	
+	public ReviewService(ReviewRepository reviewRepository)
+	{
+		this.reviewRepository=reviewRepository;
+	}
+	
+	
+	
+	public boolean hasUserAlreadyReviewed(Restaurants restaurants,Users users)
+	{
+		
+		return reviewRepository.findByRestaurantsAndUsers(restaurants, users)!=null;
+	}
+	
+	
+	//レビュー更新
+	@Transactional
+	public void update(Review review,ReviewEditForm reviewEditForm)
+	{
+		review.setEvalue(reviewEditForm.getEvalue());
+		review.setReviewComment(reviewEditForm.getReviewComment());
+		
+		reviewRepository.save(review);
+	}
+}

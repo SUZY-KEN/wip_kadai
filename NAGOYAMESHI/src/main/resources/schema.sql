@@ -11,11 +11,14 @@ id int not null auto_increment primary key,
 name varchar (50) not null,
 image varchar(255),
 price int not null,
-category_id int not null,
+category_id int ,
 sales_date varchar(50),
 description varchar (255),
 address varchar(255) not null,
-evalues int not null,
+evalues INT ,
+evalues_double double  ,
+capacity int not null,
+created_at datetime not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 foreign key (category_id) references categories (id)
 
 );
@@ -34,7 +37,7 @@ email varchar(255)  not null unique ,
 password varchar(255) not null,
 role_id int not null,
 enabled BOOLEAN NOT NULL,
-created_at datetime not null DEFAULT CURRENT_TIMESTAMP,
+created_at datetime not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 foreign key (role_id) references roles (id)
 
 );
@@ -44,12 +47,12 @@ foreign key (role_id) references roles (id)
 
 create table if not exists reviews(
 id int not null auto_increment primary key,
-name varchar (50) not null,
 restaurant_id int  not null,
 user_id int not null,
 evalue int not null,
 review_comment varchar (255) not null,
 created_at datetime not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+enabled boolean not null,
 foreign key (restaurant_id) references restaurants (id),
 foreign key (user_id) references users(id)
 
@@ -63,3 +66,42 @@ CREATE TABLE IF NOT EXISTS verification_tokens (
      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
      FOREIGN KEY (user_id) REFERENCES users (id) 
  );
+ 
+ create table if not exists company(
+id int not null auto_increment primary key,
+name varchar (50) not null,
+postal_firstcode varchar(50) not null,
+postal_lastcode varchar(50) not null,
+address varchar (255) not null,
+president varchar(50) not null,
+established_at varchar(255) not null,
+capital int not null,
+contents varchar(255)not null,
+employees int not null,
+created_at datetime not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
+
+);
+
+CREATE TABLE IF NOT EXISTS favorites (
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     user_id INT NOT NULL ,
+   	restaurant_id int not null,
+     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+     FOREIGN KEY (user_id) REFERENCES users (id) ,
+     foreign KEY (restaurant_id) REFERENCES  restaurants(id)
+ );
+
+ CREATE TABLE IF NOT EXISTS reservations (
+     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+     user_id INT NOT NULL ,
+   	 restaurant_id int not null,
+   	 checkin_date DATE NOT NULL,
+     checkin_time time  NOT NULL,
+   	 number_of_people int not null,
+     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+     FOREIGN KEY (user_id) REFERENCES users (id) ,
+     foreign KEY (restaurant_id) REFERENCES  restaurants(id)
+ );
+ 
+ 
