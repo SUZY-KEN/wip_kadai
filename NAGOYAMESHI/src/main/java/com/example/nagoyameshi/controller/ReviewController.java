@@ -57,6 +57,8 @@ public class ReviewController {
 		model.addAttribute("restaurant",restaurant);
 		model.addAttribute("reviewPage",reviewPage);
 		
+		
+		
 		return "review/show";
 	}
 
@@ -107,6 +109,7 @@ public class ReviewController {
 		Review review=reviewRepository.getReferenceById(reviewId);
 		
 		ReviewEditForm reviewEditForm=new ReviewEditForm(review.getId(),review.getEvalue(),review.getReviewComment());
+		System.out.println(review.getId());
 		
 		model.addAttribute("reviewEditForm",reviewEditForm);
 		model.addAttribute("restaurant",restaurant);
@@ -132,7 +135,7 @@ public class ReviewController {
 		}
 		
 		
-		reviewService.update(reviewEditForm,restaurant);
+		reviewService.update(reviewEditForm,restaurant,review);
 		
 		redirectAttributes.addFlashAttribute("successMessage","レビューを更新しました");
 		return "redirect:/restaurants/show/{restaurantId}";

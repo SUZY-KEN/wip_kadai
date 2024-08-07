@@ -1,20 +1,34 @@
 package com.example.nagoyameshi.controller;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.nagoyameshi.csv.CsvService;
+import com.example.nagoyameshi.csv.DownloadHelper;
+import com.example.nagoyameshi.csvData.UserCsvData;
 import com.example.nagoyameshi.entity.Users;
+import com.example.nagoyameshi.form.UserCSVForm;
 import com.example.nagoyameshi.repository.RoleRepository;
 import com.example.nagoyameshi.repository.UserRepository;
 import com.example.nagoyameshi.security.UserDetailsImpl;
+import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
 
 @Controller
@@ -24,17 +38,19 @@ public class AdminUserController {
 //	ユーザー定数
 	private final UserRepository userRepository;
 	private final RoleRepository roleRepository;
+	private final DownloadHelper downloadHelper;
+	private final CsvService csvService;
 	
 
 	
 	
-	public AdminUserController(UserRepository userRepository,RoleRepository roleRepository)
+	public AdminUserController(UserRepository userRepository,RoleRepository roleRepository,
+			DownloadHelper downloadHelper,CsvService csvService)
 	{
 		this.userRepository=userRepository;
 		this.roleRepository=roleRepository;
-		
-		
-		
+		this.downloadHelper=downloadHelper;
+		this.csvService=csvService;
 		
 	}
 	
@@ -57,7 +73,7 @@ public class AdminUserController {
 			userPage=userRepository.findAll(pageable);
 		}
 		
-		
+		model.addAttribute("userListForm",new UserCSVForm());
 		model.addAttribute("userPage",userPage);
 		model.addAttribute("myUser",myUser);
 		return "/user/admin/show";
@@ -89,4 +105,33 @@ public class AdminUserController {
 	}
 	
 
+
+
+//	会員情報出力
+	@PostMapping("/download")
+	public ResponseEntity<byte[]> downlodPageall(@ModelAttribute UserCSVForm userListForm)
+	throws IOException
+	{
+		
+		List<UserCsvData>userCsvDataList=new ArrayList<UserCsvData>();
+		
+		
+		List<Users>userList=userRepository.findAllById(userListForm.getUserId());
+		
+		for(Users user:userList)
+		{
+		UserCsvData userCsvData=new UserCsvData(user.getName(), user.getEmail(), csvService.toStringeRoleId(user.getRole().getId()), user.getCreatedAt());
+		userCsvDataList.add(userCsvData);
+		}
+		
+		
+		
+		HttpHeaders headers=new HttpHeaders();
+		downloadHelper.addContentDisposition(headers, "users.csv");
+		
+	    CsvSchema csvSchemaUser = csvService.getCsvHeaderUser();
+		
+		return new ResponseEntity<byte[]>(csvService.writeCsvTextUser(userCsvDataList,csvSchemaUser).getBytes("MS932"),headers,HttpStatus.OK);
+	}
+	
 }

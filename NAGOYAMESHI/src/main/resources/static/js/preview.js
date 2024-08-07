@@ -14,6 +14,7 @@ imageInput.addEventListener('change',()=>{
 	else
 	{
 		imagePreview.innerHTML='';
+		
 	}
 	
 	

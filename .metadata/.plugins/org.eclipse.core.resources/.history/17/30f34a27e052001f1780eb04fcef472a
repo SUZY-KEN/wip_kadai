@@ -1,0 +1,48 @@
+package com.example.nagoyameshi.form;
+
+import java.time.LocalDate;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+public class CompanyEditForm {
+
+	
+	@NotBlank(message="会社名を入力してください")
+	private String name;
+	
+	@NotNull(message="郵便番号を入力してください")
+	@Min(value=1,message = "適切な郵便番号を入力してください")
+	private Integer postalFirstcode;
+	
+	@NotNull(message="郵便番号を入力してください")
+	@Min(value=1,message = "適切な郵便番号を入力してください")
+	private Integer postalLastcode;
+	
+	@NotBlank(message="所在地を入力してください")
+	private String address;
+	
+	@NotBlank(message="代表者名を入力してください")
+	private String prseident;
+	
+	
+	private LocalDate establishedAt;
+	
+
+	
+	@NotNull(message="資本金を入力してください")
+	@Min(value=1,message = "適切な金額を入力してください")
+	private Integer capital;
+	
+	@NotBlank(message="事業内容名を入力してください")
+	private String contents;
+	
+	@NotNull(message="従業員数を入力してください")
+	@Min(value=1,message = "適切な従業員数を入力してください")
+	private Integer employees;
+}

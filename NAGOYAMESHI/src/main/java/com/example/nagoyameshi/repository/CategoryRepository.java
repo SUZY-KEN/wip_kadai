@@ -13,4 +13,5 @@ public interface CategoryRepository extends JpaRepository<Category, Integer>{
 	public Page<Category>findAll(Pageable pageable);
 	public Page<Category>findAllByNameLike(String name,Pageable pageable);
 	public List<Category>findAll();
+	public Category findByName(String name);
 }

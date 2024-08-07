@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment::meta}"></div>
+	<div th:replace="~{fragment::styles}"></div>
+	<title>ホーム</title>
+</head>
+
+<body>
+	
+	<div th:replace="~{fragment::header}"></div>
+	
+	<main>
+		
+		<div class="container pt-4 pb-5 nagoyameshi-container">
+<!--ログインアウト時の動作-->
+			
+                <div th:if="${param.loggedIn}" class="alert alert-info">
+                    ログインしました。
+                </div>  
+                
+                <div th:if="${param.loggedOut}" class="alert alert-info">
+                    ログアウトしました。
+                </div>
+				
+				<div th:if="${successMessage}" class="alert alert-info">
+                    <span th:text="${successMessage}"></span>
+                </div>   
+				
+				<div th:if="${errorMessage}" class="alert alert-info">
+                    <span th:text="${errorMessage}"></span>
+                </div>   
+            
+			
+<!--検索フォーム-->
+			<div class="row justify-content-center">
+				<form method="get" th:action="@{/restaurants}">
+					
+					<div>
+						<input type="text"name="nameKeyword" th:value="${nameKeyword}"  placeholder="お探しの店舗名を入力してください">
+					</div>
+					<div>
+						<select name="category">
+								<option value="" hidden>カテゴリを選択して下さい</option>
+								<div  th:each="category:${categoryList}">
+									<option  th:value="${category.getId()}" th:text="${category.getName()}"></option>
+								</div>
+							
+						</select>
+					</div>	
+					<div>
+						<button type="submit">検索</button>
+					</div>
+					
+					
+				</form>
+			</div>	
+		</div>
+		
+		
+		
+	</main>
+	
+	
+	<div th:replace="~{fragment::footer}"></div>
+	<div th:replace="~{fragment::scripts}"></div>
+</body>
+</html>

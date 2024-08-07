@@ -1,0 +1,20 @@
+package com.example.nagoyameshi.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.nagoyameshi.form.CompanyEditForm;
+
+@Service
+public class CompanyService {
+	
+
+	public boolean hasPostalCode(CompanyEditForm companyEditForm)
+	{
+		return companyEditForm.getPostalFirstcode()!=null&&companyEditForm.getPostalLastcode()!=null;
+	}
+	
+	public boolean isMatchPostalCode(CompanyEditForm companyEditForm)
+	{
+		return companyEditForm.getPostalFirstcode()>0&&companyEditForm.getPostalLastcode()>0;
+	}
+}

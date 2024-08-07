@@ -1,0 +1,49 @@
+@charset "UTF-8";
+
+
+a {
+   color:green;
+   text-decoration: none !important;
+ }
+ 
+ a:hover {
+     color: #407784;
+ }
+	  
+ 
+ dropdown-item:active {
+   background-color: rgb(0, 128, 128);
+ }
+ 
+ .nagoyameshi-btn{
+	 background-color: rgb(0, 128, 128) !important;   
+   transition: 0.1s;
+ }
+ 
+.breadcrumb-item
+{
+	
+} 
+ 
+ /*indexpage*/
+ #index-main
+ {
+	
+     width: 100%;
+	background-image: url("../images/indexBack.jpg");
+	background-repeat:no-repeat;
+	background-position-y: center;
+	background-size: cover;
+	
+	  }
+.top-wrapper{
+	padding-top: 350px;
+	padding-bottom: 350px;
+}
+	 
+ 
+ @media screen and (min-width: 1400px) {
+   .nagoyameshi-container {
+     max-width: 1200px;
+   }
+   }

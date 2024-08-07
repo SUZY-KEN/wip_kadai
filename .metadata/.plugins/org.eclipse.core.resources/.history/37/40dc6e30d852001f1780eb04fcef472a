@@ -1,0 +1,37 @@
+package com.example.nagoyameshi.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.example.nagoyameshi.entity.Company;
+import com.example.nagoyameshi.repository.CompanyRepository;
+
+@Controller
+public class CompanyController {
+	
+	private final CompanyRepository companyRepository;
+	
+	public CompanyController(CompanyRepository companyRepository)
+	{
+		this.companyRepository=companyRepository;
+	}
+
+	@GetMapping("/company")
+	public String show(Model model)
+	{
+		Company company=companyRepository.getById(1);
+		
+		model.addAttribute("company",company);
+		System.out.println("CompanyController.showメソッド");
+		return "/companies/show";
+	}
+	
+	@GetMapping("/company/admin/edit")
+	public String edit(Model model)
+	{
+		
+		
+		return"/company/admin/edit";
+	}
+}

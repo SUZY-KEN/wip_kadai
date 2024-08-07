@@ -40,6 +40,7 @@ public class Users {
 	
 	@Column(name="created_at",insertable = false,updatable = false)
 	private Timestamp createdAt;
-
+	
+	
 
 }

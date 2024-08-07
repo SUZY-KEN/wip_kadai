@@ -17,6 +17,7 @@ import com.example.nagoyameshi.entity.Restaurants;
 import com.example.nagoyameshi.entity.Review;
 import com.example.nagoyameshi.form.RestaurantEditForm;
 import com.example.nagoyameshi.form.RestaurantForm;
+import com.example.nagoyameshi.form.RestaurantinputCsvForm;
 import com.example.nagoyameshi.repository.CategoryRepository;
 import com.example.nagoyameshi.repository.FavoriteRepository;
 import com.example.nagoyameshi.repository.ReservationRepository;
@@ -59,7 +60,7 @@ public class RestaurantService {
 		{
 			String imageName=imageFile.getOriginalFilename();
 			String hashedFileName=generateNewFile(imageName);
-			Path filePath=Paths.get("src/main/resources/satic/storage/"+hashedFileName);
+			Path filePath=Paths.get("src/main/resources/static/storage/"+hashedFileName);
 			copyImageFile(imageFile, filePath);
 			restaurant.setImage(hashedFileName);
 			
@@ -87,7 +88,33 @@ public class RestaurantService {
 		
 	}
 	
-	
+	//店舗CSV登録
+		@Transactional
+		public void registerCsv(RestaurantinputCsvForm restaurantinputCsvForm)
+		{
+			Restaurants restaurant=new Restaurants();
+			
+			if(restaurantinputCsvForm.getCategory()!=null)
+			{
+				restaurant.setCategory(categoryRepository.getReferenceById(restaurantinputCsvForm.getCategory().getId()));
+			}
+			
+			if(restaurantinputCsvForm.getDescription()!=null)
+			{
+				restaurant.setDescription(restaurantinputCsvForm.getDescription());
+
+			}
+			
+			restaurant.setName(restaurantinputCsvForm.getName());
+			restaurant.setPrice(restaurantinputCsvForm.getPrice());
+			restaurant.setCapacity(restaurantinputCsvForm.getCapacity());
+			restaurant.setAddress(restaurantinputCsvForm.getAddress());
+			restaurant.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+			
+			restaurantRepository.save(restaurant);
+			
+			
+		}
 	
 	
 //	店舗情報更新
@@ -243,7 +270,37 @@ public class RestaurantService {
 				return false;
 			}
 			
-	
+			//店舗名が重複してないか判定(CSV)
+			public boolean hasSameRestaurantName(String name)
+			{
+				List<Restaurants>list=restaurantRepository.findAll();
+				
+				for(Restaurants restaurant:list)
+				{
+					if(name.equals(restaurant.getName()))
+					{
+						return true;
+					}
+				}
+				return false;
+			}
 			
+//			CSVが１以上の数字か判定
+			
+			public boolean isNumber(String val) {
+				try {
+					
+					Integer i=Integer.parseInt(val);
+					
+					if(i>0)
+					{
+						return true;
+					}
+					return false;
+				} catch (NumberFormatException nfex) {
+					return false;
+				}
+			}
+
 	
 }

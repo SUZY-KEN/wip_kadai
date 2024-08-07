@@ -8,7 +8,7 @@
          <title>カテゴリー管理</title>   
      </head>
      <body>
-         <div class="samuraitravel-wrapper">
+         <div class="nagoyameshi-wrapper">
              <!-- ヘッダー -->
              <div th:replace="~{fragment :: header}"></div>
              
@@ -26,21 +26,31 @@
                              
                              <h1 class="mb-3 text-center" th:text="${category.getName()+'の削除'}"></h1>  
 							
-							  <div th:each="restaurant:${restaurantList}">
-								<p th:text="${restaurant.getName()}"></p>
-								
-							  </div>
+							
+							 <div>
+								 <p class="text-center">下記の店舗にカテゴリーが登録されています。</p>
+		 						  <p class="text-center">削除してもよろしいでしょうか</p>
+		 						  
+								  <div class=" d-flex align-items-center justify-content-center mb-3">
+									<div>
+			 						  <form th:action="@{/admin/category/confirm/__${category.getId()}__}" method="get" class="m-4">
+			 							<button type="submit" class="btn text-white shadow-sm danger-btn" >削除</button>
+			 						  </form>
+			 						  
+			 						  <form th:action="@{/admin/category/show}" method="get">
+			   							<button type="submit" class="btn text-white shadow-sm nagoyameshi-btn" >キャンセル</button>
+			   						  </form>
+								  	</div>
+								  </div>
+								 
+								  <hr>
+								  <div th:each="restaurant:${restaurantList}">
+									<p th:text="${restaurant.getName()}" class="text-center"></p>
+									
+								  </div>
+							  </div> 
 							  
-							  <p>上記の店舗にカテゴリーが登録されています。</p>
-							  <p>削除してもよろしいでしょうか</p>
-							  
-							  <form th:action="@{/admin/category/confirm/__${category.getId()}__}" method="get">
-								<input type="submit" value="削除">
-							  </form>
-							  
-							  <form th:action="@{/admin/category/show}" method="get">
-	  							<input type="submit" value="キャンセル">
-	  						  </form>
+							 
 				  		</div>
 	                              
                      </div>

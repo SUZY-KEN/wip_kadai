@@ -74,7 +74,7 @@ INSERT IGNORE INTO users (id, name, email, password, role_id, enabled) VALUES (1
 INSERT IGNORE INTO users (id, name, email, password, role_id, enabled) VALUES (12, '侍 信平', 'shinpei.samurai@example.com', 'password', 1, false);
 
 --company
-INSERT IGNORE INTO company (id, name, postal_firstcode,postal_lastcode, address,president,established_at, capital,contents,employees) VALUES (1,'NAGOYAMESHI株式会社','101','0022','東京都千代田区神田練塀町300番地 住友不動産秋葉原駅前ビル5F','侍 太郎','2024年4月15日',5000,'情報提供サービス',150);
+INSERT IGNORE INTO company (id, name, postal_code, address,president,established_at, capital,contents,employees) VALUES (1,'NAGOYAMESHI株式会社','101-0022','東京都千代田区神田練塀町300番地 住友不動産秋葉原駅前ビル5F','侍 太郎','2024-04-15',5000,'情報提供サービス',150);
 
 
 --reviews

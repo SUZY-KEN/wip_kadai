@@ -49,6 +49,7 @@ public class ReviewService {
 		review.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		review.setEnabled(true);
 		
+		
 		reviewRepository.save(review);
 		
 		saveAverageEvaluesToRestaurantEvalues(restaurants);
@@ -57,9 +58,9 @@ public class ReviewService {
 	
 	//レビュー更新
 	@Transactional
-	public void update(ReviewEditForm reviewEditForm,Restaurants restaurants)
+	public void update(ReviewEditForm reviewEditForm,Restaurants restaurants,Review review)
 	{
-		 Review review = reviewRepository.getReferenceById(reviewEditForm.getId());   
+		
 		 
 		review.setEvalue(reviewEditForm.getEvalue());
 		review.setReviewComment(reviewEditForm.getReviewComment());

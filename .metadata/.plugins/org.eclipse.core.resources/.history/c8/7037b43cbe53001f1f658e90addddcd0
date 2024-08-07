@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+	<div th:replace="~{fragment::meta}"></div>
+	<div th:replace="~{fragment::styles}"></div>
+	<title>ホーム</title>
+</head>
+
+<body>
+	
+	<div th:replace="~{fragment::header}"></div>
+	
+	<main class="py-xl-5" id="index-main">
+		
+		<div class="container pt-4 pb-5 nagoyameshi-container">
+<!--ログインアウト時の動作-->
+			
+                <div th:if="${param.loggedIn}" class="alert alert-info">
+                    ログインしました。
+                </div>  
+                
+                <div th:if="${param.loggedOut}" class="alert alert-info">
+                    ログアウトしました。
+                </div>
+				
+				<div th:if="${successMessage}" class="alert alert-info">
+                    <span th:text="${successMessage}"></span>
+                </div>   
+				
+				<div th:if="${errorMessage}" class="alert alert-info">
+                    <span th:text="${errorMessage}"></span>
+                </div>   
+            
+			
+<!--検索フォーム-->
+			<div class="d-flex align-items-center justify-content-center top-w">
+				<div class="search-area px-5 py-4">
+					<h2>NAGOYAMESHIを探す</h2>
+					<form method="get" th:action="@{/restaurants}" class="mb-3 nagoyameshi-search-form">
+						
+						<div class="input-group">
+							<input type="text"name="nameKeyword" th:value="${nameKeyword}"  placeholder="お探しの店舗名" class="form-control">
+						
+						
+							<select name="category" class="col-xs-1 form-control">
+									<option value="" hidden>カテゴリ</option>
+									<div  th:each="category:${categoryList}">
+										<option  th:value="${category.getId()}" th:text="${category.getName()}"></option>
+									</div>
+								
+							</select>
+						
+						
+							<button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
+						
+						</div>
+						
+					</form>
+				</div>
+			</div>	
+		</div>
+		
+		
+		
+	</main>
+	
+	
+	<div th:replace="~{fragment::footer}"></div>
+	<div th:replace="~{fragment::scripts}"></div>
+</body>
+</html>

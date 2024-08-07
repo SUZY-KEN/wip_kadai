@@ -1,27 +1,41 @@
 package com.example.nagoyameshi.service;
 
+import java.sql.Timestamp;
+import java.util.Map;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.nagoyameshi.entity.Roles;
+import com.example.nagoyameshi.entity.StripeTokens;
 import com.example.nagoyameshi.entity.Users;
 import com.example.nagoyameshi.form.EditUserForm;
 import com.example.nagoyameshi.form.SignupForm;
 import com.example.nagoyameshi.repository.RoleRepository;
+import com.example.nagoyameshi.repository.StripeTokensRepository;
 import com.example.nagoyameshi.repository.UserRepository;
+import com.example.nagoyameshi.security.UserDetailsServiceImpl;
 
 @Service
 public class UserService {
 	private final RoleRepository roleRepository;
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final StripeTokensRepository stripeTokensRepository;
+	private final UserDetailsServiceImpl userDetailsServiceImpl;
 	
-	public UserService(RoleRepository roleRepository,UserRepository userRepository,PasswordEncoder passwordEncoder)
+	public UserService(RoleRepository roleRepository,UserRepository userRepository,PasswordEncoder passwordEncoder,
+			StripeTokensRepository stripeTokensRepository,UserDetailsServiceImpl userDetailsServiceImpl)
 	{
 		this.roleRepository=roleRepository;
 		this.userRepository=userRepository;
 		this.passwordEncoder=passwordEncoder;
+		this.stripeTokensRepository=stripeTokensRepository;
+		this.userDetailsServiceImpl=userDetailsServiceImpl;
 	}
 
 	
@@ -73,5 +87,64 @@ public class UserService {
 		  userRepository.save(user);
 		  
 	  }
+	  
+	  //有料会員登録
+	  @Transactional
+	  public void subscription(Map<String, String>metadata,String subscriptionId,String customerId)
+	  {
+		  
+		  Integer userId=Integer.parseInt(metadata.get("userId"));
+		  Users user=userRepository.getReferenceById(userId);
+		  
+		  StripeTokens stripeTokens=new StripeTokens();
+		  stripeTokens.setUserId(user);
+		  stripeTokens.setCustomerId(customerId);
+		  stripeTokens.setSubscriptionId(subscriptionId);
+		  stripeTokens.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		  stripeTokensRepository.save(stripeTokens);
+		  
+		  
+		  user.setRole(roleRepository.getReferenceById(2));
+		  userRepository.save(user);
+
+		   
+		}
+
+		
+		
+		  
+		  
+	  
+	  
+	//有料会員削除
+	  @Transactional
+	  public String disSubscription(Users user)
+	  {
+		  Users myUser=user;
+		  StripeTokens stripetoken=findstripeTokenByUser(myUser);
+		  String subscriptionId=stripetoken.getSubscriptionId();
+		  
+		  stripeTokensRepository.delete(stripetoken);
+		  myUser.setRole(roleRepository.getReferenceById(1));
+		  userRepository.save(myUser);
+		 
 	
+		  
+		  return subscriptionId;
+	  }
+	  
+	  public StripeTokens findstripeTokenByUser(Users user)
+	  {
+		  return stripeTokensRepository.findByUserId(user);
+	  }
+	
+	  
+	  public void userDetailsUpdate(Users user)
+	  {
+		  UserDetails userDetails=userDetailsServiceImpl.loadUserByUsername(user.getEmail());
+		  UsernamePasswordAuthenticationToken authentication = 
+			        new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+		 
+		    SecurityContextHolder.getContext().setAuthentication(authentication);
+	  }
 }

@@ -1,5 +1,7 @@
 package com.example.nagoyameshi.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,11 +24,10 @@ public class Company {
 	@Column(name="name")
 	private String name;
 	
-	@Column(name="postal_firstcode")
-	private String postalFirstcode;
+	@Column(name="postal_code")
+	private String postalCode;
 	
-	@Column(name="postal_lastcode")
-	private String postalLastcode;
+	
 	
 	@Column(name="address")
 	private String address;
@@ -35,7 +36,7 @@ public class Company {
 	private String prseident;
 	
 	@Column(name="established_at")
-	private String establishedAt;
+	private LocalDate establishedAt;
 	
 	@Column(name="capital")
 	private Integer capital;

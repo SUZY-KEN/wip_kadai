@@ -1,0 +1,46 @@
+package com.example.nagoyameshi.form;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+public class CompanyEditForm {
+
+	
+	@NotBlank(message="会社名を入力してください")
+	private String name;
+	
+	@NotNull(message="郵便番号を入力してください")
+	@Min(value=1,message = "適切な郵便番号を入力してください")
+	private Integer postalFirstcode;
+	
+	@NotNull(message="郵便番号を入力してください")
+	@Min(value=1,message = "適切な郵便番号を入力してください")
+	private Integer postalLastcode;
+	
+	@NotBlank(message="所在地を入力してください")
+	private String address;
+	
+	@NotBlank(message="代表者名を入力してください")
+	private String prseident;
+	
+	
+	private String establishedAt;
+	
+	@NotNull(message="郵便番号を入力してください")
+	@Min(value=1,message = "適切な郵便番号を入力してください")
+	private Integer capital;
+	
+	
+	private String contents;
+	
+	@NotNull(message="郵便番号を入力してください")
+	@Min(value=1,message = "適切な郵便番号を入力してください")
+	private Integer employees;
+}

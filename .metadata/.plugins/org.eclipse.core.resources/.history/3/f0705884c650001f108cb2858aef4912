@@ -1,0 +1,13 @@
+package com.example.nagoyameshi.controller;
+
+import org.springframework.stereotype.Controller;
+
+@Controller
+public class StripeWebhookController {
+	  @Value("${stripe.api-key}")
+	     private String stripeApiKey;
+	 
+	     @Value("${stripe.webhook-secret}")
+	     private String webhookSecret;
+
+}

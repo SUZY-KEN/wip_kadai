@@ -19,6 +19,7 @@ import com.example.nagoyameshi.entity.Restaurants;
 import com.example.nagoyameshi.entity.Review;
 import com.example.nagoyameshi.entity.Users;
 import com.example.nagoyameshi.form.ReservationForm;
+import com.example.nagoyameshi.form.RestaurantCSVForm;
 import com.example.nagoyameshi.repository.CategoryRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
 import com.example.nagoyameshi.repository.ReviewRepository;
@@ -35,6 +36,7 @@ public class RestaurantController {
 	private final ReviewService reviewService;
 	private final FavoriteService favoriteService;
 	
+	
 	public RestaurantController(RestaurantRepository restaurantRepository,
 			CategoryRepository categoryRepository,ReviewRepository reviewRepository,ReviewService reviewService,
 			FavoriteService favoriteService)
@@ -44,6 +46,7 @@ public class RestaurantController {
 		this.reviewRepository=reviewRepository;
 		this.reviewService=reviewService;
 		this.favoriteService=favoriteService;
+		
 	}
 	
 	
@@ -153,6 +156,8 @@ public class RestaurantController {
 		model.addAttribute("category",category);
 		model.addAttribute("price",price);
 		
+		
+		model.addAttribute("restaurantCsvForm",new RestaurantCSVForm());
 		return "/restaurants/index";
 	}
 	
@@ -195,6 +200,8 @@ public class RestaurantController {
          model.addAttribute("favorite",favorite);
          model.addAttribute("newReviews", newReviews);        
          model.addAttribute("totalReviewCount", totalReviewCount);
+ 		model.addAttribute("restaurantCsvForm",new RestaurantCSVForm());
+
          
          
         
@@ -203,5 +210,6 @@ public class RestaurantController {
 		
 		return "restaurants/show";
 	}
+
 	
 }

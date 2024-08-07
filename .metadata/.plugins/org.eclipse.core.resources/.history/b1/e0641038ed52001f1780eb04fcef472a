@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+ <html xmlns:th="https://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+     <head>
+         <div th:replace="~{fragment :: meta}"></div>   
+              
+         <div th:replace="~{fragment :: styles}"></div>
+		 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+         
+         <title>会社情報編集</title>       
+     </head>
+     <body>
+         <div class="samuraitravel-wrapper">
+             <!-- ヘッダー -->
+             <div th:replace="~{fragment :: header}"></div>
+             
+             <main>
+                 <div class="container pt-4 pb-5 samuraitravel-container">
+                     <div class="row justify-content-center">
+                         <div class="col-xl-5 col-lg-6 col-md-8">
+                             <nav class="mb-4" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+                                 <ol class="breadcrumb mb-0"> 
+									<li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>    
+									<li class="breadcrumb-item"><a th:href="@{/company}">会社情報</a></li>                                                         
+                                     <li class="breadcrumb-item active" aria-current="page">会社情報編集</li>
+                                 </ol>
+                             </nav> 
+                             
+                             <h1 class="mb-4 text-center">会社情報編集</h1>         
+                             
+                             <form method="post" th:action="@{/company/admin/update}" th:object="${companyEditForm}">     
+								                                                      
+                                 <div class="form-group row mb-3">
+                                     <div class="col-md-4">
+                                         <label for="name" class="col-form-label text-md-left fw-bold">会社名</label>
+                                     </div>
+                                     <div class="col-md-8">                                    
+                                         <div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2" th:errors="*{name}"></div>                                    
+                                         <input type="text" class="form-control" th:field="*{name}" autofocus>
+                                     </div>
+                                 </div>
+								 
+								 <div class="form-group row mb-3">
+	                                   <div class="col-md-4">
+	                                       <label for="postalCode" class="col-form-label text-md-left fw-bold">郵便番号</label>
+	                                   </div>
+	                                   <div class="col-md-8">
+	                                       <div th:if="${#fields.hasErrors('postalFirstcode')}" class="text-danger small mb-2" th:errors="*{postalFirstcode}"></div>
+											<div class="d-flex">
+												<input type="text" class="form-control" th:field="*{postalFirstcode}" autocomplete="postal-code">
+												  <span>-</span>
+												  <input type="text" class="form-control" th:field="*{postalLastcode}" autocomplete="postal-code">
+												
+											</div>
+	                                     
+	                                   </div>
+	                               </div> 
+								 
+								 <div class="form-group row mb-3">
+	                                  <div class="col-md-4">
+	                                      <label for="address" class="col-form-label text-md-left fw-bold">所在地</label>
+	                                  </div>
+	                                  <div class="col-md-8">
+	                                      <div th:if="${#fields.hasErrors('address')}" class="text-danger small mb-2" th:errors="*{address}"></div>
+	                                      <input type="text" class="form-control" th:field="*{address}">  
+	                                  </div>
+	                              </div> 
+								  
+								  
+	  							 <div class="form-group row mb-3">
+                                    <div class="col-md-4">
+                                        <label for="president" class="col-form-label text-md-left fw-bold">代表者</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div th:if="${#fields.hasErrors('president')}" class="text-danger small mb-2" th:errors="*{president}"></div>
+                                        <input type="text" class="form-control" th:field="*{president}">  
+                                    </div>
+                                </div>                          
+                                 
+								<div class="form-group row mb-3">
+	                                 <div class="col-md-4">
+	                                     <label for="establishAt" class="col-form-label text-md-left fw-bold">設立日</label>
+	                                 </div>
+	                                 <div class="col-md-8">                            
+	                                     <div th:if="${#fields.hasErrors('establishedAt')}" class="text-danger small mb-2" th:errors="*{establishedAt}"></div>                                        
+	                                     <input type="text" class="form-control" th:field="*{establishedAt}">
+	                                 </div>
+	                             </div>	
+									
+								 <div class="form-group row mb-3">
+                                     <div class="col-md-4">
+                                         <label for="capital" class="col-form-label text-md-left fw-bold">資本金</label>
+                                     </div> 
+                                     <div class="col-md-8">
+                                         <div th:if="${#fields.hasErrors('capital')}" class="text-danger small mb-2" th:errors="*{capital}"></div>
+										 <div class="d-flex">
+	                                         <input type="number" class="form-control" th:field="*{capital}"> 
+											 <span>千円</span>   
+										 </div>                            
+                                     </div>                                    
+                                 </div>
+									
+                                 <div class="form-group row mb-3">
+                                     <div class="col-md-4">
+                                         <label for="contents" class="col-form-label text-md-left fw-bold">事業内容</label>
+                                     </div>
+                                     <div class="col-md-8">                            
+                                         <div th:if="${#fields.hasErrors('contents')}" class="text-danger small mb-2" th:errors="*{contents}"></div>                                        
+                                         <textarea class="form-control" th:field="*{contents}" cols="30" rows="5"></textarea>
+                                     </div>
+                                 </div>
+                                 
+                                
+                                 
+                                 <div class="form-group row mb-3">
+                                     <div class="col-md-4">
+                                         <label for="employees" class="col-form-label text-md-left fw-bold">従業員数</label>
+                                     </div> 
+                                     <div class="col-md-8">
+                                         <div th:if="${#fields.hasErrors('employees')}" class="text-danger small mb-2" th:errors="*{employees}"></div>
+										 <div class="d-flex">
+                                         	<input type="number" size="12" class="form-control" th:field="*{employees}"> 
+											<span>名</span> 
+										 </div>                              
+                                     </div>                                    
+                                 </div>                                                                
+                                                                                                                                                                                                                                                                                 
+       
+                                 <div class="form-group d-flex justify-content-center my-4">
+                                     <button type="submit" >編集</button>
+                                 </div>
+                             </form>                                                                         
+                         </div>
+                     </div>
+                 </div>                
+             </main>
+             
+             <!-- フッター -->
+             <div th:replace="~{fragment :: footer}"></div>
+         </div>    
+         
+         <div th:replace="~{fragment :: scripts}"></div>  
+		 <script th:src="@{/js/flatpickr.js}"></script>       
+     </body>
+ </html>

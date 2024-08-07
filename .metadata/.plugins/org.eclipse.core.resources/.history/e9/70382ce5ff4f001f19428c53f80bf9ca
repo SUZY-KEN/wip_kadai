@@ -1,0 +1,13 @@
+package com.example.nagoyameshi.form;
+
+import java.util.List;
+
+import com.example.nagoyameshi.entity.Users;
+
+import lombok.Data;
+
+@Data
+public class UserListForm {
+
+	private List<Users>user;
+}

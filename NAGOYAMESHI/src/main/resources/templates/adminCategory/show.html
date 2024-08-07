@@ -8,7 +8,7 @@
          <title>カテゴリー管理</title>   
      </head>
      <body>
-         <div class="samuraitravel-wrapper">
+         <div class="nagoyameshi-wrapper">
              <!-- ヘッダー -->
              <div th:replace="~{fragment :: header}"></div>
              
@@ -16,6 +16,7 @@
                  <div class="container samuraitravel-container pb-5">
                      <div class="row justify-content-center">
                          <div class="col-xxl-9 col-xl-10 col-lg-11">
+							
                              <nav class="my-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                                  <ol class="breadcrumb mb-0"> 
                                      <li class="breadcrumb-item"><a th:href="@{/}">ホーム</a></li>  
@@ -30,66 +31,70 @@
 				 				<span th:text="${successMessage}"></span>
 				 		 	  </div>
 							  
-							  
-				  		<!--カテゴリ検索-->
-							  <div>
+							  <div class="d-flex justify-content-between flex-wrap me-1 mb-4">
 								<form method="get" th:action="@{/admin/category/show}">
-									<input type="text"name="keyword" th:value="${keyword}"  placeholder="キーワード">
-									<input type="submit" value="検索">
+									<div class="input-group">
+										<input type="text"name="keyword" th:value="${keyword}" class="form-control"  placeholder="キーワード">
+										<button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">検索</button>
+									</div>
+								</form>
+								
+								<!--カテゴリ登録-->
+								<form method="get" th:action="@{/admin/category/create}">
+									<button type="submit" class="btn text-white shadow-sm nagoyameshi-btn">カテゴリ登録</a>
 								</form>
 							  </div>
-							  
-						<!--カテゴリ登録-->
-							<div>
-								<a th:href="@{/admin/category/create}">カテゴリ登録</a>
-							</div>
-							
-						
-							  
-						<!--カテゴリなし-->
-							 <div th:if="${categoryPage.isEmpty()}" class="row justify-content-center" th:text="カテゴリーがありません"> </div>
+	
 							
 						<!--カテゴリ情報-->
 							<div class="mb-5">
-								<span th:each="category:${categoryPage}"><a href="#" data-bs-toggle="modal" th:data-bs-target="${'#modalCategory'+category.getId()}" th:text="${category.getName()}"  class="btn btn-outline-secondary btn-sm me-1 mb-2"></a>
+								<!--カテゴリ検索-->
+												
+								
+							<!--カテゴリなし-->
+								 <div th:if="${categoryPage.isEmpty()}" class="row justify-content-center" th:text="カテゴリーがありません"> </div>
+								
+								<span th:each="category:${categoryPage}"><a href="#" data-bs-toggle="modal" th:data-bs-target="${'#modalCategory'+category.getId()}" th:text="${category.getName()}"  class="btn btn-outline-secondary btn-sm  mb-2"></a>
 									
 									<!--モーダル-->
 									<div class="modal fade" th:id="${'modalCategory'+category.getId()}" tabindex="-1" aria-labelledby="${'modalCategoryLabel'+categor.getId()}">
 										<div class="modal-dialog">
 											<div class="modal-content">
-												<div class="modal-header">
+												<div class="modal-header d-flex justify-content-center">
 													<h5 th:text="${category.getName()}"></h5>
 												</div>
 												
 												
-												<div class="modal-body">
-													<div>
-														
+												<div class="modal-body 	d-flex justify-content-center">
+													
+													
+													<div class="m-3">
 														<form method="get" th:action="@{/restaurants}">
 															<input type="hidden" name="category" th:value="${category.getId()}">
-															<button type="submit" >該当する店舗の表示</button>
+															<button type="submit"  class="btn text-white shadow-sm mb-2 w-100 nagoyameshi-btn ">該当店舗の表示</button>
 														</form>
 														
 													</div>
 														
-													<div>
+													<div class="m-3">
 														<form method="post"th:action="@{/admin/category/edit/__${category.getId()}__}">
-		                                                    <button type="submit">編集</button>
+		                                                    <button type="submit"class="btn text-white shadow-sm mb-2 w-100 nagoyameshi-btn">編集</button>
 		                                                </form>
 													
 			
 													</div>
 													
-													<div>
+													<div class="m-3">
 														<form method="post"th:action="@{/admin/category/delete/__${category.getId()}__}">
-		                                                    <button type="submit">削除</button>
+		                                                    <button type="submit" class="btn text-white shadow-sm w-100 danger-btn">削除</button>
 		                                                </form>
 													
 													</div>
+													
 												</div>
 												
 												<div class="modal-footer">
-													<button type="button" data-bs-dismiss="modal">閉じる</button>
+													<button type="button" data-bs-dismiss="modal" class="btn-close" ></button>
 													
 												</div>
 											</div>
@@ -106,15 +111,15 @@
 	                                 <ul class="pagination">
 	                                     <li class="page-item">
 	                                         <span th:if="${categoryPage.isFirst()}" class="page-link disabled">前</span>
-	                                         <a th:unless="${categoryPage.isFirst()}" th:href="@{/admin/category/show(page = ${categoryPage.getNumber() - 1})}" class="page-link samuraitravel-page-link">前</a>
+	                                         <a th:unless="${categoryPage.isFirst()}" th:href="@{/admin/category/show(page = ${categoryPage.getNumber() - 1})}" class="page-link nagoyameshi-page-link">前</a>
 	                                     </li>
 	                                     <li th:each="i : ${#numbers.sequence(0, categoryPage.getTotalPages() - 1)}" class="page-item">
-	                                         <span th:if="${i == categoryPage.getNumber()}" class="page-link active samuraitravel-active" th:text="${i + 1}"></span>
-	                                         <a th:unless="${i == categoryPage.getNumber()}" th:href="@{/admin/category/show(page = ${i})}" class="page-link samuraitravel-page-link" th:text="${i + 1}"></a>
+	                                         <span th:if="${i == categoryPage.getNumber()}" class="page-link active nagoyameshi-active" th:text="${i + 1}"></span>
+	                                         <a th:unless="${i == categoryPage.getNumber()}" th:href="@{/admin/category/show(page = ${i})}" class="page-link nagoyameshi-page-link" th:text="${i + 1}"></a>
 	                                     </li>
 	                                     <li class="page-item">                        
 	                                         <span th:if="${categoryPage.isLast()}" class="page-link disabled">次</span>
-	                                         <a th:unless="${categoryPage.isLast()}" th:href="@{/admin/category/show(page = ${categoryPage.getNumber() + 1})}" class="page-link samuraitravel-page-link">次</a>
+	                                         <a th:unless="${categoryPage.isLast()}" th:href="@{/admin/category/show(page = ${categoryPage.getNumber() + 1})}" class="page-link nagoyameshi-page-link">次</a>
 	                                     </li>
 	                                 </ul>
 	                             </nav> 
@@ -125,9 +130,10 @@
              </main>
              
            
-         </div>    
+           
 		 <!-- フッター -->
 		 <div th:replace="~{fragment :: footer}"></div>
-         <div th:replace="~{fragment :: scripts}"></div>  
+	 </div>  
+     <div th:replace="~{fragment :: scripts}"></div>  
    </body>
  </html>
