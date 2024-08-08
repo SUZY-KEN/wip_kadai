@@ -30,6 +30,7 @@ import jakarta.transaction.Transactional;
 public class RestaurantService {
 	private final RestaurantRepository restaurantRepository;
 	private final CategoryRepository categoryRepository;
+	private final HolidayService holidayService;
 	
 	private final ReviewRepository reviewRepository;
 	private final FavoriteRepository favoriteRepository;
@@ -37,13 +38,14 @@ public class RestaurantService {
 	
 	
 	public RestaurantService(RestaurantRepository restaurantRepository,CategoryRepository categoryRepository,
-			ReviewRepository reviewRepository,FavoriteRepository favoriteRepository,ReservationRepository reservationRepository)
+			ReviewRepository reviewRepository,FavoriteRepository favoriteRepository,ReservationRepository reservationRepository,HolidayService holidayService)
 	{
 		this.restaurantRepository=restaurantRepository;
 		this.categoryRepository=categoryRepository;
 		this.reviewRepository=reviewRepository;
 		this.favoriteRepository=favoriteRepository;
 		this.reservationRepository=reservationRepository;
+		this.holidayService=holidayService;
 	}
 	
 
@@ -54,6 +56,7 @@ public class RestaurantService {
 	public void register(RestaurantForm restaurantForm)
 	{
 		Restaurants restaurant=new Restaurants();
+		System.out.println(restaurant.getId());
 		MultipartFile imageFile=restaurantForm.getImageFile();
 		
 		if(!imageFile.isEmpty())
@@ -77,6 +80,7 @@ public class RestaurantService {
 
 		}
 		
+		
 		restaurant.setName(restaurantForm.getName());
 		restaurant.setPrice(restaurantForm.getPrice());
 		restaurant.setCapacity(restaurantForm.getCapacity());
@@ -84,6 +88,8 @@ public class RestaurantService {
 		restaurant.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		
 		restaurantRepository.save(restaurant);
+		System.out.println(restaurant.getId());
+		holidayService.create(restaurant, restaurantForm);
 		
 		
 	}
@@ -112,6 +118,7 @@ public class RestaurantService {
 			restaurant.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 			
 			restaurantRepository.save(restaurant);
+			
 			
 			
 		}
@@ -154,6 +161,8 @@ public class RestaurantService {
 		restaurant.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		
 		restaurantRepository.save(restaurant);
+		
+		
 		
 		
 	}

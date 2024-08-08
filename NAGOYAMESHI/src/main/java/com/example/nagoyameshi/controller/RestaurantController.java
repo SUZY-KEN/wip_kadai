@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.nagoyameshi.entity.Favorite;
+import com.example.nagoyameshi.entity.Holiday;
 import com.example.nagoyameshi.entity.Restaurants;
 import com.example.nagoyameshi.entity.Review;
 import com.example.nagoyameshi.entity.Users;
 import com.example.nagoyameshi.form.ReservationForm;
 import com.example.nagoyameshi.form.RestaurantCSVForm;
 import com.example.nagoyameshi.repository.CategoryRepository;
+import com.example.nagoyameshi.repository.HolidayRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
 import com.example.nagoyameshi.repository.ReviewRepository;
 import com.example.nagoyameshi.security.UserDetailsImpl;
@@ -35,17 +37,19 @@ public class RestaurantController {
 	private final ReviewRepository reviewRepository;
 	private final ReviewService reviewService;
 	private final FavoriteService favoriteService;
+	private final HolidayRepository holidayRepository;
 	
 	
 	public RestaurantController(RestaurantRepository restaurantRepository,
 			CategoryRepository categoryRepository,ReviewRepository reviewRepository,ReviewService reviewService,
-			FavoriteService favoriteService)
+			FavoriteService favoriteService,HolidayRepository holidayRepository)
 	{
 		this.restaurantRepository=restaurantRepository;
 		this.categoryRepository=categoryRepository;
 		this.reviewRepository=reviewRepository;
 		this.reviewService=reviewService;
 		this.favoriteService=favoriteService;
+		this.holidayRepository=holidayRepository;
 		
 	}
 	
@@ -193,6 +197,11 @@ public class RestaurantController {
          List<Review> newReviews =reviewRepository.findTop6ByRestaurantsAndEnabledOrderByCreatedAtDesc(restaurant,true) ;
          long totalReviewCount=reviewRepository.countByRestaurantsAndEnabled(restaurant,true);
          
+         Holiday holiday=holidayRepository.findByRestaurantId(restaurant);
+        
+        
+         
+         model.addAttribute("holiday",holiday);
          model.addAttribute("restaurants",restaurant);
          model.addAttribute("reservationForm",new ReservationForm());
          model.addAttribute("hasUserAlreadyReviewed", hasUserAlreadyReviewed);

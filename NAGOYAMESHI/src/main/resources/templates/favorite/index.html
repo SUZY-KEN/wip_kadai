@@ -41,7 +41,9 @@
 													<div>
 														<h3 class="card-title mx-3" th:text="${favorite.getRestaurant().getName()}"></h3>
 													</div>
+												</a>	
 												<div class="mx-3">
+													
 												
 											   		<a th:href="@{/favorite/index/__${favorite.getRestaurant().getId()}__/cancel}">お気に入り解除</a>
 												
@@ -51,7 +53,7 @@
 										<hr class="my-0 ">
 											
 						<!--イメージは後で作る-->
-										<a th:href="@{/restaurants/show/__${favorite.getId()}__}" class="link-dark nagoyameshi-card-link"> 
+										<a th:href="@{/restaurants/show/__${favorite.getRestaurant().getId()}__}" class="link-dark nagoyameshi-card-link"> 
 											<div class="row g-0">
 	                                            <div class="col-md-4">  
 												                                                                              

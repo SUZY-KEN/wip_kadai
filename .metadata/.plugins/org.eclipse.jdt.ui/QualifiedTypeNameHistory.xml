@@ -56,8 +56,8 @@
     <fullyQualifiedTypeName name="org.springframework.security.web.context.HttpSessionSecurityContextRepository"/>
     <fullyQualifiedTypeName name="com.example.nagoyameshi.service.UserService"/>
     <fullyQualifiedTypeName name="com.example.nagoyameshi.entity.Users"/>
-    <fullyQualifiedTypeName name="java.lang.System"/>
     <fullyQualifiedTypeName name="org.springframework.web.servlet.mvc.support.RedirectAttributes"/>
     <fullyQualifiedTypeName name="java.nio.charset.Charset"/>
     <fullyQualifiedTypeName name="com.example.nagoyameshi.entity.Review"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
 </qualifiedTypeNameHistroy>

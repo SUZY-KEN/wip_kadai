@@ -1,0 +1,67 @@
+let maxDate = new Date();
+ maxDate = maxDate.setMonth(maxDate.getMonth() + 2);
+ 
+var items=[];
+const holidayList=document.getElementsByClassName("holiday");
+ console.log("list"+holidayList.length);
+ 
+for(let i=0;i<holidayList.length;i++)
+{
+	console.log("list"+holidayList[i]);
+	
+	
+	console.log("list"+holidayList[i].innerHTML);
+	
+	let item=null;
+	switch(holidayList[i].innerHTML)
+	{
+		case "月":item=1;
+					break;
+		
+		case "火":item=2;
+					break;
+		case "水":item=3;
+					break;
+		case "木":item=4;
+					break;
+		case "金":item=5;
+					break;
+		case "土":item=6;
+					break;
+		case "日":item=0;
+					break;
+		default:break;
+	}
+	
+	if(item!=null)
+	{
+		items.push(item);
+	}
+	
+}
+
+ console.log("items"+items);
+ 
+// 予約日登録用
+ flatpickr('#checkinDate', {
+   mode: "single",
+   locale: 'ja',
+   minDate: 'today',
+   maxDate: maxDate,
+//   disable:[
+//	          function (date) {
+//	            return items.includes(date.getDay())  }
+//	          
+//     		]
+   
+ });
+
+
+//会社設立日編集用
+ let minDate=new Date();
+ flatpickr('#establishedAt', {
+   mode: "single",
+   locale: 'ja',
+   minDate: '1800-01-01',
+   maxDate: minDate
+ });

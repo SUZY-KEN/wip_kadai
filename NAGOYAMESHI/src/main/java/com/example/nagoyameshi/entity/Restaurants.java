@@ -36,8 +36,7 @@ public class Restaurants {
 	@JoinColumn(name="category_id")
 	private Category category;
 	
-	@Column(name="sales_date")
-	private String salesDate;
+	
 	
 	@Column(name="description")
 	private String description;

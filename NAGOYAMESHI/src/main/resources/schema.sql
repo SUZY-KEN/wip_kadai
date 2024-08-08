@@ -16,10 +16,25 @@ sales_date varchar(50),
 description varchar (255),
 address varchar(255) not null,
 evalues INT ,
-evalues_double double  ,
+evalues_double double,
 capacity int not null,
 created_at datetime not null DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 foreign key (category_id) references categories (id)
+
+);
+
+create table if not exists holiday(
+id int not null auto_increment primary key,
+restaurant_id int not null,
+mon BOOLEAN not null,
+tue BOOLEAN not null,
+wed BOOLEAN not null,
+thr BOOLEAN not null,
+fri BOOLEAN not null,
+sat BOOLEAN not null,
+sun BOOLEAN not null,
+foreign key (restaurant_id) references restaurants(id)
+
 
 );
 

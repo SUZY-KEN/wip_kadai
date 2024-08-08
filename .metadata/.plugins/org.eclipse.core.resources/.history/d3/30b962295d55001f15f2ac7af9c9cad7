@@ -1,0 +1,38 @@
+let maxDate = new Date();
+ maxDate = maxDate.setMonth(maxDate.getMonth() + 2);
+ 
+let items;
+const holidayList=document.getElementsByClassName("holiday");
+ console.log("list"+holidayList.length);
+ 
+for(let i=0;i<holidayList.length;i++)
+{
+	console.log("list"+holidayList[i].value);
+	items.push(holidayList[i].value);
+}
+
+ console.log("items"+items);
+ 
+// 予約日登録用
+ flatpickr('#checkinDate', {
+   mode: "single",
+   locale: 'ja',
+   minDate: 'today',
+   maxDate: maxDate,
+//   disable:[
+//	          function (date) {
+//	            return items.includes(date.getDay())  }
+//	          
+//     		]
+   
+ });
+
+
+//会社設立日編集用
+ let minDate=new Date();
+ flatpickr('#establishedAt', {
+   mode: "single",
+   locale: 'ja',
+   minDate: '1800-01-01',
+   maxDate: minDate
+ });

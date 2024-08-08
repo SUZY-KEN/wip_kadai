@@ -125,8 +125,27 @@
 														
 														
 														<div class="row pb-2 mb-2 border-bottom">
-															<div class="col-4 fw-bold">営業日</div>
-															<div class="col"></div>
+															<div class="col-4 fw-bold">定休日</div>
+															<div class="col">
+																<span th:if="${holiday.getMonday()}" th:text="月"class="holiday">
+																</span>
+																<span th:if="${holiday.getTuesday()}" th:text="火" class="holiday">
+																</span>
+																<span th:if="${holiday.getWednesday()}" th:text="水"class="holiday">
+																</span>
+																<span th:if="${holiday.getThursday()}" th:text="木"class="holiday">
+																</span>
+																<span th:if="${holiday.getFriday()}" th:text="金"class="holiday">
+																</span>
+																<span th:if="${holiday.getSaturday()}" th:text="土"class="holiday">
+																</span>
+																<span th:if="${holiday.getSunday()}" th:text="日"class="holiday">
+																</span>
+																
+																
+																
+																
+															</div>
 														</div>
 														
 														<div class="row pb-2 mb-2 border-bottom">
@@ -157,7 +176,9 @@
 														<div class="form-group mb-2">                                            
 									                        <label for="checkinDate" class="col-form-label text-md-left fw-bold">予約日</label>    
 									                        <div th:if="${#fields.hasErrors('checkinDate')}" class="text-danger small mb-2" th:errors="*{checkinDate}"></div>                                          
-									                        <input type="text" class="form-control" th:field="*{checkinDate}">                                                                     
+									                        <input type="text" class="form-control" th:field="*{checkinDate}">    
+													
+															                                                               
 									                    </div>
 														
 														<div class="form-group mb-4">                                            

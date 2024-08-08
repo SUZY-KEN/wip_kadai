@@ -1,0 +1,31 @@
+package com.example.nagoyameshi.service;
+
+import org.springframework.stereotype.Service;
+
+import com.example.nagoyameshi.entity.Holiday;
+import com.example.nagoyameshi.entity.Restaurants;
+import com.example.nagoyameshi.form.RestaurantForm;
+
+import jakarta.transaction.Transactional;
+
+@Service
+public class HolidayService {
+	
+	@Transactional
+	public void create(Restaurants restaurants,RestaurantForm restaurantForm) {
+		Holiday holiday=new Holiday();
+		holiday.setRestaurantId(restaurants);
+		holiday.setMonday(restaurantForm.getMonday());
+		holiday.setTuesday(restaurantForm.getTuesday());
+		holiday.setWednesday(restaurantForm.getWednesday());
+		holiday.setThursday(restaurantForm.getThursday());
+		holiday.setFriday(restaurantForm.getFriday());
+		holiday.setSaturday(restaurantForm.getSaturday());
+		holiday.setSunday(restaurantForm.getSunday());
+		
+		
+		
+		
+	}
+
+}

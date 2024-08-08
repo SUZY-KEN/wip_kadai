@@ -29,13 +29,16 @@ import com.example.nagoyameshi.csv.CsvService;
 import com.example.nagoyameshi.csv.DownloadHelper;
 import com.example.nagoyameshi.csvData.RestaurantCsvData;
 import com.example.nagoyameshi.entity.Category;
+import com.example.nagoyameshi.entity.Holiday;
 import com.example.nagoyameshi.entity.Restaurants;
 import com.example.nagoyameshi.form.RestaurantCSVForm;
 import com.example.nagoyameshi.form.RestaurantEditForm;
 import com.example.nagoyameshi.form.RestaurantForm;
 import com.example.nagoyameshi.form.RestaurantinputCsvForm;
 import com.example.nagoyameshi.repository.CategoryRepository;
+import com.example.nagoyameshi.repository.HolidayRepository;
 import com.example.nagoyameshi.repository.RestaurantRepository;
+import com.example.nagoyameshi.service.HolidayService;
 import com.example.nagoyameshi.service.RestaurantService;
 import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 
@@ -48,28 +51,35 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AdminRestaurantController {
 	
 	private final RestaurantService restaurantService;
+	private final HolidayService holidayService;
 	private final CategoryRepository categoryRepository;
 	private final RestaurantRepository restaurantRepository;
 	private final CsvService csvService;
 	private final DownloadHelper downloadHelper;
+	private final HolidayRepository holidayRepository;
 	
 	public AdminRestaurantController(RestaurantService restaurantService,CategoryRepository categoryRepository,RestaurantRepository restaurantRepository,
-			CsvService csvService,DownloadHelper downloadHelper)
+			CsvService csvService,DownloadHelper downloadHelper,HolidayService holidayService,HolidayRepository holidayRepository)
 	{
 		this.restaurantService=restaurantService;
+		this.holidayService=holidayService;
 		this.categoryRepository=categoryRepository;
 		this.restaurantRepository=restaurantRepository;
+		
 		this.csvService=csvService;
 		this.downloadHelper=downloadHelper;
+		this.holidayRepository=holidayRepository;
 		
 	}
 
 	@GetMapping("/create")
 	public String show(Model model)
 	{
+		RestaurantForm restaurantForm=new RestaurantForm();
+		
 		
 		model.addAttribute("categoryList",categoryRepository.findAll());
-		model.addAttribute("restaurantForm",new RestaurantForm());
+		model.addAttribute("restaurantForm",restaurantForm);
 		return "restaurants/admin/create";
 	}
 	
@@ -104,6 +114,7 @@ public class AdminRestaurantController {
 	public String edit(@PathVariable (name="id")Integer id,Model model)
 	{
 		Restaurants restaurant=restaurantRepository.getReferenceById(id);
+		Holiday holiday=holidayRepository.findByRestaurantId(restaurant);
 		
 		Integer categoryId=null;
 		if(restaurant.getCategory()!=null)
@@ -117,8 +128,14 @@ public class AdminRestaurantController {
 			description=restaurant.getDescription();
 		}
 		
+		
+	
 		RestaurantEditForm restaurantEditForm=new RestaurantEditForm(restaurant.getId(), restaurant.getName(), null,restaurant.getPrice(),
-				categoryId, restaurant.getCapacity(), description, restaurant.getAddress());
+			categoryId, restaurant.getCapacity(), description, restaurant.getAddress(),holiday.getMonday(),holiday.getTuesday(),
+			holiday.getWednesday(),holiday.getThursday(),holiday.getFriday(),holiday.getSaturday(),holiday.getSunday());
+	
+		
+		
 		
 		model.addAttribute("restaurant",restaurant);
 		model.addAttribute("restaurantEditForm",restaurantEditForm);
@@ -134,6 +151,8 @@ public class AdminRestaurantController {
 	public String update(@ModelAttribute @Validated RestaurantEditForm restaurantEditForm,
 			BindingResult bindingResult,RedirectAttributes redirectAttributes,Model model)
 	{
+		Restaurants restaurants=restaurantRepository.getReferenceById(restaurantEditForm.getId());
+		
 		if(restaurantService.hasSameRestaurantEditName(restaurantEditForm))
 		{
 			FieldError fieldError=new FieldError(bindingResult.getObjectName(),"name", "すでに店舗が存在しています");
@@ -149,6 +168,8 @@ public class AdminRestaurantController {
 		redirectAttributes.addFlashAttribute("successMessage",restaurantEditForm.getName()+"の店舗情報を更新しました");
 		
 		restaurantService.update(restaurantEditForm);
+		holidayService.update(restaurants, restaurantEditForm);
+		
 		return "redirect:/restaurants?nameKeyword=&category=";
 	}
 	
@@ -160,6 +181,7 @@ public class AdminRestaurantController {
 		
 		
 		redirectAttributes.addFlashAttribute("successMessage",restaurant.getName()+"の店舗情報を削除しました");
+		holidayService.delete(restaurant);
 		restaurantService.delete(restaurant);
 		
 		
